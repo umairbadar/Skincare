@@ -2,6 +2,7 @@ package com.skincare.fragments.brands;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,8 +138,9 @@ public class BrandProductsFragment extends Fragment implements RecyclerViewItemI
     }
 
     @Override
-    public void itemClick(String name, String desc, String image_url) {
+    public void itemClick(long product_id, String name, String desc, String image_url) {
         Bundle args = new Bundle();
+        args.putLong("id", product_id);
         args.putString("name", name);
         args.putString("desc", desc);
         args.putString("image_url", image_url);

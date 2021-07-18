@@ -51,5 +51,12 @@ dependencies {
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    //Circular ImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //Retrofit Library
+    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
+
+    //Gson Converter Library
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
 }

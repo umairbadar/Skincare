@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso;
 public class BrandProductDetailsFragment extends Fragment implements View.OnClickListener {
 
     private String name = "", desc = "", image_url = "";
+    private long product_id;
 
     private NavController navController;
 
@@ -28,6 +29,7 @@ public class BrandProductDetailsFragment extends Fragment implements View.OnClic
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null){
+            product_id = getArguments().getLong("id");
             name = getArguments().getString("name");
             desc = getArguments().getString("desc");
             image_url = getArguments().getString("image_url");
@@ -65,9 +67,7 @@ public class BrandProductDetailsFragment extends Fragment implements View.OnClic
 
         if (id == R.id.btn_details){
             Bundle args = new Bundle();
-            args.putString("name", name);
-            args.putString("image_url", image_url);
-            args.putString("desc", desc);
+            args.putLong("id", product_id);
             navController.navigate(R.id.action_nav_brand_product_details_to_nav_product_details, args);
         }
     }

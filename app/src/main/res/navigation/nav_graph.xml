@@ -49,20 +49,32 @@
 
     <fragment
         android:id="@+id/nav_search"
-        android:name="com.skincare.fragments.SearchFragment"
+        android:name="com.skincare.fragments.search.SearchFragment"
         android:label="@string/search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_nav_search_to_nav_brand_product_details"
+            app:destination="@id/nav_brand_product_details" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_liked_products"
         android:name="com.skincare.fragments.LikedProductsFragment"
         android:label="@string/liked_products"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_nav_liked_products_to_nav_brand_product_details"
+            app:destination="@id/nav_brand_product_details" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_similar_products"
         android:name="com.skincare.fragments.SimilarProductsFragment"
         android:label="@string/similar_products"
-        tools:layout="@layout/fragment_similar_products" />
+        tools:layout="@layout/fragment_similar_products" >
+        <action
+            android:id="@+id/action_nav_similar_products_to_nav_brand_product_details"
+            app:destination="@id/nav_brand_product_details" />
+    </fragment>
 
 </navigation>
