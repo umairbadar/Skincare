@@ -11,8 +11,9 @@ public class BrandProductsModel {
     private String product_name;
     private String product_url;
     private long rating;
+    private String ingredients;
 
-    public BrandProductsModel(String brand, String category, String description, String image_url, long price, long product_id, String product_name, String product_url, long rating) {
+    public BrandProductsModel(String brand, String category, String description, String image_url, long price, long product_id, String product_name, String product_url, long rating, String ingredients) {
         this.brand = brand;
         this.category = category;
         this.description = description;
@@ -22,6 +23,11 @@ public class BrandProductsModel {
         this.product_name = product_name;
         this.product_url = product_url;
         this.rating = rating;
+        this.ingredients = ingredients;
+    }
+
+    public String getIngredients() {
+        return ingredients;
     }
 
     public String getBrand() {

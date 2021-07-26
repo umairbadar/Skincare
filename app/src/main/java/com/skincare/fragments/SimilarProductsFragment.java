@@ -158,6 +158,7 @@ public class SimilarProductsFragment extends Fragment implements RecyclerViewIte
                                                                                     String product_name = documentSnapshot1.getString("product_name");
                                                                                     String product_url = documentSnapshot1.getString("product_url");
                                                                                     long rating = documentSnapshot1.getLong("rating");
+                                                                                    String ingredients = documentSnapshot.getString("ingredients");
 
                                                                                     BrandProductsModel item = new BrandProductsModel(
                                                                                             brand,
@@ -168,7 +169,8 @@ public class SimilarProductsFragment extends Fragment implements RecyclerViewIte
                                                                                             product_id,
                                                                                             product_name,
                                                                                             product_url,
-                                                                                            rating
+                                                                                            rating,
+                                                                                            ingredients
                                                                                     );
                                                                                     collaborativeBasedList.add(item);
                                                                                     collaborativeBasedAdapter.notifyDataSetChanged();
@@ -197,6 +199,7 @@ public class SimilarProductsFragment extends Fragment implements RecyclerViewIte
                                                                                     String product_name = documentSnapshot1.getString("product_name");
                                                                                     String product_url = documentSnapshot1.getString("product_url");
                                                                                     long rating = documentSnapshot1.getLong("rating");
+                                                                                    String ingredients = documentSnapshot.getString("ingredients");
 
                                                                                     BrandProductsModel item = new BrandProductsModel(
                                                                                             brand,
@@ -207,7 +210,8 @@ public class SimilarProductsFragment extends Fragment implements RecyclerViewIte
                                                                                             product_id,
                                                                                             product_name,
                                                                                             product_url,
-                                                                                            rating
+                                                                                            rating,
+                                                                                            ingredients
                                                                                     );
                                                                                     contentBasedList.add(item);
                                                                                     contentBasedAdapter.notifyDataSetChanged();
@@ -274,13 +278,14 @@ public class SimilarProductsFragment extends Fragment implements RecyclerViewIte
     }
 
     @Override
-    public void itemClick(long product_id, String name, String desc, String image_url, String product_url) {
+    public void itemClick(long product_id, String name, String desc, String image_url, String product_url, String ingredients) {
         Bundle args = new Bundle();
         args.putLong("id", product_id);
         args.putString("name", name);
         args.putString("desc", desc);
         args.putString("image_url", image_url);
         args.putString("product_url", product_url);
+        args.putString("ingredients", ingredients);
         navController.navigate(R.id.action_nav_similar_products_to_nav_brand_product_details, args);
     }
 }

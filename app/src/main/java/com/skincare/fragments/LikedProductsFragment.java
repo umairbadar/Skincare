@@ -5,22 +5,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -80,7 +74,7 @@ public class LikedProductsFragment extends Fragment implements RecyclerViewItemI
         getLikedProductList();
     }
 
-    private void getLikedProductList(){
+    private void getLikedProductList() {
 
         loader = Loader.show(requireContext());
 
@@ -97,7 +91,7 @@ public class LikedProductsFragment extends Fragment implements RecyclerViewItemI
                         List<Long> likedProducts = (List<Long>) documentSnapshot.get("likedProducts");
                         if (likedProducts != null && likedProducts.size() > 0) {
 
-                            for (int i = 0; i < likedProducts.size(); i++){
+                            for (int i = 0; i < likedProducts.size(); i++) {
                                 db.collection("products")
                                         .document(String.valueOf(likedProducts.get(i)))
                                         .get()
@@ -105,28 +99,30 @@ public class LikedProductsFragment extends Fragment implements RecyclerViewItemI
                                             DocumentSnapshot documentSnapshot1 = task1.getResult();
 
                                             String brand = documentSnapshot1.getString("brand");
-                                                String category = documentSnapshot1.getString("category");
-                                                String description = documentSnapshot1.getString("description");
-                                                String image_url = documentSnapshot1.getString("image_url");
-                                                long price = documentSnapshot1.getLong("price");
-                                                long product_id = documentSnapshot1.getLong("product_id");
-                                                String product_name = documentSnapshot1.getString("product_name");
-                                                String product_url = documentSnapshot1.getString("product_url");
-                                                long rating = documentSnapshot1.getLong("rating");
+                                            String category = documentSnapshot1.getString("category");
+                                            String description = documentSnapshot1.getString("description");
+                                            String image_url = documentSnapshot1.getString("image_url");
+                                            long price = documentSnapshot1.getLong("price");
+                                            long product_id = documentSnapshot1.getLong("product_id");
+                                            String product_name = documentSnapshot1.getString("product_name");
+                                            String product_url = documentSnapshot1.getString("product_url");
+                                            long rating = documentSnapshot1.getLong("rating");
+                                            String ingredients = documentSnapshot.getString("ingredients");
 
-                                                BrandProductsModel item = new BrandProductsModel(
-                                                        brand,
-                                                        category,
-                                                        description,
-                                                        image_url,
-                                                        price,
-                                                        product_id,
-                                                        product_name,
-                                                        product_url,
-                                                        rating
-                                                );
-                                                list.add(item);
-                                                adapter.notifyDataSetChanged();
+                                            BrandProductsModel item = new BrandProductsModel(
+                                                    brand,
+                                                    category,
+                                                    description,
+                                                    image_url,
+                                                    price,
+                                                    product_id,
+                                                    product_name,
+                                                    product_url,
+                                                    rating,
+                                                    ingredients
+                                            );
+                                            list.add(item);
+                                            adapter.notifyDataSetChanged();
                                         });
                             }
 
@@ -153,13 +149,14 @@ public class LikedProductsFragment extends Fragment implements RecyclerViewItemI
     }
 
     @Override
-    public void itemClick(long product_id, String name, String desc, String image_url, String product_url) {
+    public void itemClick(long product_id, String name, String desc, String image_url, String product_url, String ingredients) {
         Bundle args = new Bundle();
         args.putLong("id", product_id);
         args.putString("name", name);
         args.putString("desc", desc);
         args.putString("image_url", image_url);
         args.putString("product_url", product_url);
+        args.putString("ingredients", ingredients);
         navController.navigate(R.id.action_nav_liked_products_to_nav_brand_product_details, args);
     }
 }

@@ -49,7 +49,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
         BrandProductsModel item = list.get(position);
 
-        holder.tv_product_name.setText(item.getProduct_name());
+        String text = item.getBrand() + " - " + item.getProduct_name();
+        holder.tv_product_name.setText(text);
         String price = "$" + item.getPrice();
         holder.tv_product_price.setText(price);
 
@@ -65,7 +66,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 item.getProduct_name(),
                 item.getDescription(),
                 item.getImage_url(),
-                item.getProduct_url()
+                item.getProduct_url(),
+                item.getIngredients()
         ));
 
     }

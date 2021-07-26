@@ -27,6 +27,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.skincare.R;
@@ -51,7 +52,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
     private TextView tv_product_price;
     private TextView tv_product_desc;
     private TextView tv_avg_rating;
-    private TextView tv_comments_count;
+    public static TextView tv_comments_count;
     private TextView tv_no_comments_msg;
 
     private RatingBar ratingBar;
@@ -202,10 +203,15 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
         commentsMap.put("productId", id);
         commentsMap.put("comment", comment);
 
+        DocumentReference ref = db.collection("Users")
+                .document(currentUser.getUid())
+                .collection("comments")
+                .document();
+
         db.collection("Users")
                 .document(currentUser.getUid())
                 .collection("comments")
-                .document()
+                .document(ref.getId())
                 .set(commentsMap)
                 .addOnCompleteListener(task1 -> {
                     if (task1.isSuccessful()) {
@@ -220,6 +226,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                             comment_list.setVisibility(View.VISIBLE);
 
                         CommentsModel item = new CommentsModel(
+                                ref.getId(),
                                 comment,
                                 id
                         );
@@ -345,8 +352,10 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                                     comment_list.setVisibility(View.VISIBLE);
 
                                 String comment = documentSnapshot.getString("comment");
+                                String id = documentSnapshot.getId();
 
                                 CommentsModel item = new CommentsModel(
+                                        id,
                                         comment,
                                         productId
                                 );

@@ -42,7 +42,8 @@ public class BrandProductsAdapter extends RecyclerView.Adapter<BrandProductsAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BrandProductsModel item = list.get(position);
 
-        holder.tv_product_name.setText(item.getProduct_name());
+        String text = item.getBrand() + " - " + item.getProduct_name();
+        holder.tv_product_name.setText(text);
         String price = "$" + item.getPrice();
         holder.tv_product_price.setText(price);
 
@@ -58,7 +59,8 @@ public class BrandProductsAdapter extends RecyclerView.Adapter<BrandProductsAdap
                 item.getProduct_name(),
                 item.getDescription(),
                 item.getImage_url(),
-                item.getProduct_url()
+                item.getProduct_url(),
+                item.getIngredients()
         ));
 
     }

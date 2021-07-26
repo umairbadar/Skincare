@@ -116,7 +116,7 @@ public class BrandsFragment extends Fragment implements RecyclerViewItemInterfac
     }
 
     @Override
-    public void itemClick(long product_id, String name, String desc, String image_url, String product_url) {
+    public void itemClick(long product_id, String name, String desc, String image_url, String product_url, String ingredients) {
 
     }
 }

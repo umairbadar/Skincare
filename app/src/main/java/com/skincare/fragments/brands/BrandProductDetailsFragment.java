@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso;
 
 public class BrandProductDetailsFragment extends Fragment implements View.OnClickListener {
 
-    private String name = "", desc = "", image_url = "", product_url = "";
+    private String name = "", desc = "", image_url = "", product_url = "", ingredients = "";
     private long product_id;
 
     private NavController navController;
@@ -34,6 +34,7 @@ public class BrandProductDetailsFragment extends Fragment implements View.OnClic
             desc = getArguments().getString("desc");
             image_url = getArguments().getString("image_url");
             product_url = getArguments().getString("product_url");
+            ingredients = getArguments().getString("ingredients");
         }
     }
 
@@ -56,6 +57,9 @@ public class BrandProductDetailsFragment extends Fragment implements View.OnClic
 
         TextView tv_product_desc = view.findViewById(R.id.tv_product_desc);
         tv_product_desc.setText(desc);
+
+        TextView tv_product_ingredients = view.findViewById(R.id.tv_product_ingredients);
+        tv_product_ingredients.setText(ingredients);
 
         TextView tv_product_url = view.findViewById(R.id.tv_product_url);
         tv_product_url.setText(product_url);
