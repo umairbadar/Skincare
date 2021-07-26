@@ -55,6 +55,16 @@
                         android:textColor="@color/black"/>
 
                     <TextView
+                        android:id="@+id/tv_product_url"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="30dp"
+                        android:paddingEnd="30dp"
+                        android:paddingTop="15dp"
+                        android:autoLink="web"
+                        android:textSize="14sp"/>
+
+                    <TextView
                         android:id="@+id/tv_product_desc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

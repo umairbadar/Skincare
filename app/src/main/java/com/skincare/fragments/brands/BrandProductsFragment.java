@@ -138,12 +138,13 @@ public class BrandProductsFragment extends Fragment implements RecyclerViewItemI
     }
 
     @Override
-    public void itemClick(long product_id, String name, String desc, String image_url) {
+    public void itemClick(long product_id, String name, String desc, String image_url, String product_url) {
         Bundle args = new Bundle();
         args.putLong("id", product_id);
         args.putString("name", name);
         args.putString("desc", desc);
         args.putString("image_url", image_url);
+        args.putString("product_url", product_url);
         navController.navigate(R.id.action_nav_brand_products_to_nav_brand_product_details, args);
     }
 }

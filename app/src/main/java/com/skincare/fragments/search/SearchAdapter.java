@@ -64,7 +64,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 item.getProduct_id(),
                 item.getProduct_name(),
                 item.getDescription(),
-                item.getImage_url()
+                item.getImage_url(),
+                item.getProduct_url()
         ));
 
     }

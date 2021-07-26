@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Skincare">
         <activity
-            android:name=".SignupActivity"
+            android:name=".SignupProcess2Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SignupProcess1Activity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".LoginActivity"

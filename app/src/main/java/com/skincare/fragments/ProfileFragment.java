@@ -30,7 +30,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.skincare.R;
-import com.skincare.SignupActivity;
 import com.skincare.utilities.Loader;
 
 import java.util.ArrayList;

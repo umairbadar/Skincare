@@ -31,15 +31,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
+public class SignupProcess2Activity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
     private ProgressDialog loader;
 
-    private TextInputLayout layout_email_address, layout_password, layout_name, layout_phone;
-    private TextInputEditText et_email_address, et_password, et_name, et_phone_number;
+    private TextInputLayout layout_name, layout_phone;
+    private TextInputEditText et_name, et_phone_number;
 
     private CheckBox cb_skin_combination, cb_dry_skin, cb_normal_skin, cb_oily_skin, cb_sensitive_skin;
 
@@ -59,17 +59,21 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private List<String> hairColorList;
     private String selectedHairColor = "";
 
+    private String email_address, password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_signup_process_2);
 
         //Initializing Views...
         initViews();
-
     }
 
     private void initViews() {
+
+        email_address = getIntent().getStringExtra("email_address");
+        password = getIntent().getStringExtra("password");
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -98,24 +102,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
 
-        layout_email_address = findViewById(R.id.layout_email_address);
-        et_email_address = findViewById(R.id.et_email_address);
-        et_email_address.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (layout_email_address.isErrorEnabled())
-                    layout_email_address.setErrorEnabled(false);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
         layout_phone = findViewById(R.id.layout_phone);
         et_phone_number = findViewById(R.id.et_phone_number);
         et_phone_number.addTextChangedListener(new TextWatcher() {
@@ -131,30 +117,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
             @Override
             public void afterTextChanged(Editable s) {
-            }
-        });
-
-        layout_password = findViewById(R.id.layout_password);
-        et_password = findViewById(R.id.et_password);
-        et_password.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (layout_password.isErrorEnabled())
-                    layout_password.setErrorEnabled(false);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.toString().length() == 1 && s.toString().startsWith("0")) {
-                    s.clear();
-                    Toast.makeText(getApplicationContext(), "Password must not start with 0",
-                            Toast.LENGTH_LONG).show();
-                }
             }
         });
 
@@ -478,7 +440,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                                             if (loader != null && loader.isShowing())
                                                 loader.dismiss();
 
-                                            Toast.makeText(SignupActivity.this, "User Created. Login to Continue!",
+                                            Toast.makeText(SignupProcess2Activity.this, "User Created. Login to Continue!",
                                                     Toast.LENGTH_SHORT).show();
                                             finish();
                                         } else {
@@ -486,7 +448,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                                             if (loader != null && loader.isShowing())
                                                 loader.dismiss();
 
-                                            Toast.makeText(SignupActivity.this, "Authentication failed.",
+                                            Toast.makeText(SignupProcess2Activity.this, "Authentication failed.",
                                                     Toast.LENGTH_SHORT).show();
                                         }
                                     });
@@ -496,7 +458,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         if (loader != null && loader.isShowing())
                             loader.dismiss();
 
-                        Toast.makeText(SignupActivity.this, "Error: " + task.getException().getMessage(),
+                        Toast.makeText(SignupProcess2Activity.this, "Error: " + task.getException().getMessage(),
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -505,35 +467,16 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private void validations() {
 
         String name = et_name.getText().toString().trim();
-        String email_address = et_email_address.getText().toString().trim();
         String phone_number = et_phone_number.getText().toString().trim();
-        String password = et_password.getText().toString().trim();
-        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
         if (name.isEmpty()) {
             layout_name.setErrorEnabled(true);
             layout_name.setError("Enter Name");
             layout_name.requestFocus();
-        } else if (email_address.isEmpty()) {
-            layout_email_address.setErrorEnabled(true);
-            layout_email_address.setError("Enter Email Address");
-            layout_email_address.requestFocus();
-        } else if (!email_address.matches(emailPattern)) {
-            layout_email_address.setErrorEnabled(true);
-            layout_email_address.setError("Enter Valid Email Address");
-            layout_email_address.requestFocus();
         } else if (phone_number.isEmpty()) {
             layout_phone.setErrorEnabled(true);
             layout_phone.setError("Enter Phone Number");
             layout_phone.requestFocus();
-        } else if (password.isEmpty()) {
-            layout_password.setErrorEnabled(true);
-            layout_password.setError("Enter Password");
-            layout_password.requestFocus();
-        } else if (password.length() < 6) {
-            layout_password.setErrorEnabled(true);
-            layout_password.setError("Password Must be 6 characters long");
-            layout_password.requestFocus();
         } else if (spn_skin_tone.getSelectedItemPosition() == 0) {
             Toast.makeText(this, "Select Skin Tone",
                     Toast.LENGTH_LONG).show();

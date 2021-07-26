@@ -68,6 +68,8 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
 
     private ImageButton btn_like_product;
 
+    private boolean likeStatus = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -296,7 +298,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                                         DocumentSnapshot documentSnapshot = task1.getResult();
                                         List<Long> likedProducts = (List<Long>) documentSnapshot.get("likedProducts");
                                         if (likedProducts != null && likedProducts.contains(id)) {
-                                            btn_like_product.setEnabled(false);
+                                            likeStatus = true;
                                             btn_like_product.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_like_red));
                                         }
                                     }
@@ -377,46 +379,93 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
 
                 loader = Loader.show(requireContext());
 
-                db.collection("Users")
-                        .document(currentUser.getUid())
-                        .get()
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
+                if (likeStatus) {
+                    //unlike product
+                    db.collection("Users")
+                            .document(currentUser.getUid())
+                            .get()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
 
-                                DocumentSnapshot document = task.getResult();
+                                    DocumentSnapshot document = task.getResult();
 
-                                likedProducts = (List<Long>) document.get("likedProducts");
+                                    likedProducts = (List<Long>) document.get("likedProducts");
 
-                                if (likedProducts == null)
-                                    likedProducts = new ArrayList<>();
+                                    if (likedProducts == null)
+                                        likedProducts = new ArrayList<>();
 
-                                likedProducts.add(this.id);
+                                    likedProducts.remove(this.id);
 
-                                Map<String, Object> docData = new HashMap<>();
-                                docData.put("likedProducts", likedProducts);
+                                    Map<String, Object> docData = new HashMap<>();
+                                    docData.put("likedProducts", likedProducts);
 
-                                db.collection("Users")
-                                        .document(currentUser.getUid())
-                                        .update(docData)
-                                        .addOnCompleteListener(task1 -> {
-                                            if (task1.isSuccessful()) {
-                                                if (loader != null && loader.isShowing())
-                                                    loader.dismiss();
 
-                                                btn_like_product.setEnabled(false);
-                                                btn_like_product.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_like_red));
-                                            }
-                                        });
+                                    db.collection("Users")
+                                            .document(currentUser.getUid())
+                                            .update(docData)
+                                            .addOnCompleteListener(task1 -> {
+                                                if (task1.isSuccessful()) {
+                                                    if (loader != null && loader.isShowing())
+                                                        loader.dismiss();
 
-                            } else {
+                                                    likeStatus = false;
+                                                    btn_like_product.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_like));
+                                                }
+                                            });
 
-                                if (loader != null && loader.isShowing())
-                                    loader.dismiss();
+                                } else {
 
-                                Toast.makeText(requireContext(), task.getException().getLocalizedMessage(),
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        });
+                                    if (loader != null && loader.isShowing())
+                                        loader.dismiss();
+
+                                    Toast.makeText(requireContext(), task.getException().getLocalizedMessage(),
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            });
+
+                } else {
+                    //like product
+                    db.collection("Users")
+                            .document(currentUser.getUid())
+                            .get()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+
+                                    DocumentSnapshot document = task.getResult();
+
+                                    likedProducts = (List<Long>) document.get("likedProducts");
+
+                                    if (likedProducts == null)
+                                        likedProducts = new ArrayList<>();
+
+                                    likedProducts.add(this.id);
+
+                                    Map<String, Object> docData = new HashMap<>();
+                                    docData.put("likedProducts", likedProducts);
+
+                                    db.collection("Users")
+                                            .document(currentUser.getUid())
+                                            .update(docData)
+                                            .addOnCompleteListener(task1 -> {
+                                                if (task1.isSuccessful()) {
+                                                    if (loader != null && loader.isShowing())
+                                                        loader.dismiss();
+
+                                                    likeStatus = true;
+                                                    btn_like_product.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_like_red));
+                                                }
+                                            });
+
+                                } else {
+
+                                    if (loader != null && loader.isShowing())
+                                        loader.dismiss();
+
+                                    Toast.makeText(requireContext(), task.getException().getLocalizedMessage(),
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            });
+                }
             }
         } else if (id == R.id.btn_send_comment) {
             String comment = et_comment.getText().toString();

@@ -57,7 +57,8 @@ public class BrandProductsAdapter extends RecyclerView.Adapter<BrandProductsAdap
                 item.getProduct_id(),
                 item.getProduct_name(),
                 item.getDescription(),
-                item.getImage_url()
+                item.getImage_url(),
+                item.getProduct_url()
         ));
 
     }

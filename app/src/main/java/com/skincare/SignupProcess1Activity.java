@@ -1,6 +1,5 @@
 package com.skincare;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,30 +11,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.skincare.utilities.Loader;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private FirebaseAuth mAuth;
+public class SignupProcess1Activity extends AppCompatActivity implements View.OnClickListener {
 
     private TextInputLayout layout_email_address, layout_password;
     private TextInputEditText et_email_address, et_password;
 
-    private ProgressDialog loader;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signup_process_1);
 
         //Initializing Views...
         initViews();
+
     }
 
     private void initViews() {
-
-        mAuth = FirebaseAuth.getInstance();
 
         layout_email_address = findViewById(R.id.layout_email_address);
         et_email_address = findViewById(R.id.et_email_address);
@@ -80,32 +72,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
-    private void sigInWithEmailAndPassword(String email_address, String password) {
-
-        loader = Loader.show(this);
-
-        mAuth.signInWithEmailAndPassword(email_address, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-
-                        if (loader != null && loader.isShowing())
-                            loader.dismiss();
-
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-
-                    } else {
-                        if (loader != null && loader.isShowing())
-                            loader.dismiss();
-
-                        Toast.makeText(LoginActivity.this, "Error: " + task.getException().getMessage(),
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private void validations(){
+    private void validations() {
 
         String email_address = et_email_address.getText().toString().trim();
         String password = et_password.getText().toString().trim();
@@ -128,10 +95,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             layout_password.setError("Password Must be 6 characters long");
             layout_password.requestFocus();
         } else {
-            sigInWithEmailAndPassword(
-                    email_address,
-                    password
-            );
+            Intent intent = new Intent(this, SignupProcess2Activity.class);
+            intent.putExtra("email_address", email_address);
+            intent.putExtra("password", password);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -140,10 +108,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         int id = v.getId();
 
-        if (id == R.id.btn_signup) {
-            Intent intent = new Intent(this, SignupProcess1Activity.class);
-            startActivity(intent);
-        } else if (id == R.id.btn_login) {
+        if (id == R.id.btn_next) {
             validations();
         }
     }

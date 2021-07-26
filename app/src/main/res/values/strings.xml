@@ -28,6 +28,7 @@
     <string name="logout">Logout</string>
     <string name="update_profile">Update Profile</string>
     <string name="enter_comment_here">Enter Comment here...</string>
-    <string name="content_based_filtering">Content Based Filtering</string>
-    <string name="collaborative_based_filtering">Collaborative Based Filtering</string>
+    <string name="content_based_filtering">Products that have similar ingredients</string>
+    <string name="collaborative_based_filtering">Products that other users similar to you have liked</string>
+    <string name="next">Next</string>
 </resources>
