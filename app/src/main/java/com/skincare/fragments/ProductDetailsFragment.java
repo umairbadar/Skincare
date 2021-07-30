@@ -67,7 +67,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
 
     private List<Long> likedProducts;
 
-    private ImageButton btn_like_product;
+    private ImageButton btn_like_product, btn_delete_rating;
 
     private boolean likeStatus = false;
 
@@ -104,6 +104,9 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
 
         btn_like_product = view.findViewById(R.id.btn_like_product);
         btn_like_product.setOnClickListener(this);
+
+        btn_delete_rating = view.findViewById(R.id.btn_delete_rating);
+        btn_delete_rating.setOnClickListener(this);
 
         ImageButton btn_send_comment = view.findViewById(R.id.btn_send_comment);
         btn_send_comment.setOnClickListener(this);
@@ -486,6 +489,32 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
             } else {
                 updateUserComment(comment);
             }
+        } else if (id == R.id.btn_delete_rating) {
+            db.collection("Users")
+                    .document(currentUser.getUid())
+                    .collection("ratings")
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot documentSnapshot : task.getResult()){
+                                String id_1 = documentSnapshot.getId();
+                                long productId = documentSnapshot.getLong("productId");
+                                if (productId == this.id){
+                                    DocumentReference selectedDoc = db.collection("Users").document(currentUser.getUid()).collection("ratings").document(id_1);
+                                    selectedDoc.delete();
+                                    ratingBar.setRating(0);
+                                }
+                            }
+
+                        } else {
+
+                            if (loader != null && loader.isShowing())
+                                loader.dismiss();
+
+                            Toast.makeText(requireContext(), task.getException().getLocalizedMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
         }
     }
 }
