@@ -1,5 +1,7 @@
 package com.skincare.fragments.brands;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,11 +64,11 @@ public class BrandProductDetailsFragment extends Fragment implements View.OnClic
         TextView tv_product_ingredients = view.findViewById(R.id.tv_product_ingredients);
         tv_product_ingredients.setText(ingredients);
 
-        TextView tv_product_url = view.findViewById(R.id.tv_product_url);
-        tv_product_url.setText(product_url);
-
         Button btn_details = view.findViewById(R.id.btn_details);
         btn_details.setOnClickListener(this);
+
+        Button btn_buy_now = view.findViewById(R.id.btn_buy_now);
+        btn_buy_now.setOnClickListener(this);
     }
 
     @Override
@@ -78,6 +80,10 @@ public class BrandProductDetailsFragment extends Fragment implements View.OnClic
             Bundle args = new Bundle();
             args.putLong("id", product_id);
             navController.navigate(R.id.action_nav_brand_product_details_to_nav_product_details, args);
+        } else if (id == R.id.btn_buy_now) {
+            Uri uri = Uri.parse(product_url);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         }
     }
 }
