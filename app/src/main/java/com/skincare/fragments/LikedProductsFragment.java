@@ -74,6 +74,7 @@ public class LikedProductsFragment extends Fragment implements RecyclerViewItemI
         getLikedProductList();
     }
 
+    //fetching data from db...
     private void getLikedProductList() {
 
         loader = Loader.show(requireContext());
@@ -107,7 +108,12 @@ public class LikedProductsFragment extends Fragment implements RecyclerViewItemI
                                             String product_name = documentSnapshot1.getString("product_name");
                                             String product_url = documentSnapshot1.getString("product_url");
                                             long rating = documentSnapshot1.getLong("rating");
-                                            String ingredients = documentSnapshot.getString("ingredients");
+                                            String ingredients = "";
+                                            try {
+                                                ingredients = documentSnapshot.getString("ingredients");
+                                            } catch (Exception ex) {
+                                                ex.printStackTrace();
+                                            }
 
                                             BrandProductsModel item = new BrandProductsModel(
                                                     brand,

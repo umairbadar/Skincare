@@ -87,6 +87,7 @@ public class SearchFragment extends Fragment implements RecyclerViewItemInterfac
         });
     }
 
+    //fetching data from db...
     private void getAllProducts() {
 
         loader = Loader.show(requireContext());
@@ -110,7 +111,12 @@ public class SearchFragment extends Fragment implements RecyclerViewItemInterfac
                                 String product_name = documentSnapshot.getString("product_name");
                                 String product_url = documentSnapshot.getString("product_url");
                                 long rating = documentSnapshot.getLong("rating");
-                                String ingredients = documentSnapshot.getString("ingredients");
+                                String ingredients = "";
+                                try {
+                                    ingredients = documentSnapshot.getString("ingredients");
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
+                                }
 
                                 BrandProductsModel item = new BrandProductsModel(
                                         brand,

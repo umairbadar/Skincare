@@ -165,6 +165,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
         likedProducts = new ArrayList<>();
     }
 
+    //adding product rating in db...
     private void updateUserRating(long id, int stars) {
 
         loader = Loader.show(requireContext());
@@ -198,6 +199,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                 });
     }
 
+    //adding user comments in db...
     private void updateUserComment(String comment) {
 
         loader = Loader.show(requireContext());
@@ -255,6 +257,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
                 });
     }
 
+    //fetching product details from db...
     private void getProductDetails() {
 
         loader = Loader.show(requireContext());
@@ -329,6 +332,7 @@ public class ProductDetailsFragment extends Fragment implements View.OnClickList
 
     }
 
+    //fetching product comments from db...
     private void getProductComments() {
 
         //loader = Loader.show(requireContext());

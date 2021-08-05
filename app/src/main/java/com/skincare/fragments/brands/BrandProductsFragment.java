@@ -2,11 +2,9 @@ package com.skincare.fragments.brands;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,8 +26,6 @@ import java.util.List;
 
 public class BrandProductsFragment extends Fragment implements RecyclerViewItemInterface {
 
-    private String brand_name = "";
-
     private FirebaseFirestore db;
 
     private ProgressDialog loader;
@@ -42,10 +38,6 @@ public class BrandProductsFragment extends Fragment implements RecyclerViewItemI
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            brand_name = getArguments().getString("brand_name");
-        }
     }
 
     @Override
@@ -67,19 +59,17 @@ public class BrandProductsFragment extends Fragment implements RecyclerViewItemI
 
         db = FirebaseFirestore.getInstance();
 
-        TextView tv_brand_name = view.findViewById(R.id.tv_brand_name);
-        tv_brand_name.setText(brand_name);
-
         RecyclerView brand_products_list = view.findViewById(R.id.brand_products_list);
         brand_products_list.setLayoutManager(new LinearLayoutManager(requireContext()));
         list = new ArrayList<>();
         adapter = new BrandProductsAdapter(list, requireContext(), this);
         brand_products_list.setAdapter(adapter);
 
-        getBrandProducts(brand_name.trim());
+        getBrandProducts();
     }
 
-    private void getBrandProducts(String brand_name) {
+    //fetching data from db...
+    private void getBrandProducts() {
 
         loader = Loader.show(requireContext());
 
@@ -94,33 +84,36 @@ public class BrandProductsFragment extends Fragment implements RecyclerViewItemI
                         for (DocumentSnapshot documentSnapshot : task.getResult()) {
                             if (documentSnapshot.exists()) {
                                 String brand = documentSnapshot.getString("brand");
-                                if (brand.equals(brand_name)) {
-                                    String category = documentSnapshot.getString("category");
-                                    String description = documentSnapshot.getString("description");
-                                    String image_url = documentSnapshot.getString("image_url");
-                                    long price = documentSnapshot.getLong("price");
-                                    long product_id = documentSnapshot.getLong("product_id");
-                                    String product_name = documentSnapshot.getString("product_name");
-                                    String product_url = documentSnapshot.getString("product_url");
-                                    long rating = documentSnapshot.getLong("rating");
-                                    String ingredients = documentSnapshot.getString("ingredients");
-
-                                    BrandProductsModel item = new BrandProductsModel(
-                                            brand,
-                                            category,
-                                            description,
-                                            image_url,
-                                            price,
-                                            product_id,
-                                            product_name,
-                                            product_url,
-                                            rating,
-                                            ingredients
-                                    );
-                                    list.add(item);
+                                String category = documentSnapshot.getString("category");
+                                String description = documentSnapshot.getString("description");
+                                String image_url = documentSnapshot.getString("image_url");
+                                long price = documentSnapshot.getLong("price");
+                                long product_id = documentSnapshot.getLong("product_id");
+                                String product_name = documentSnapshot.getString("product_name");
+                                String product_url = documentSnapshot.getString("product_url");
+                                long rating = documentSnapshot.getLong("rating");
+                                String ingredients = "";
+                                try {
+                                    ingredients = documentSnapshot.getString("ingredients");
+                                } catch (Exception ex){
+                                    ex.printStackTrace();
                                 }
-                                adapter.notifyDataSetChanged();
+
+                                BrandProductsModel item = new BrandProductsModel(
+                                        brand,
+                                        category,
+                                        description,
+                                        image_url,
+                                        price,
+                                        product_id,
+                                        product_name,
+                                        product_url,
+                                        rating,
+                                        ingredients
+                                );
+                                list.add(item);
                             }
+                            adapter.notifyDataSetChanged();
                         }
 
                     } else {

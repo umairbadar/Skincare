@@ -110,9 +110,6 @@ public class BrandsFragment extends Fragment implements RecyclerViewItemInterfac
 
     @Override
     public void itemClick(String name) {
-        Bundle args = new Bundle();
-        args.putString("brand_name", name);
-        navController.navigate(R.id.action_nav_brands_to_nav_brand_products, args);
     }
 
     @Override

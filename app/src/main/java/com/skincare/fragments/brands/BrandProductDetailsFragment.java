@@ -49,6 +49,7 @@ public class BrandProductDetailsFragment extends Fragment implements View.OnClic
 
         navController = Navigation.findNavController(view);
 
+        //Displaying data...
         ImageView img_brand_product = view.findViewById(R.id.img_brand_product);
         Picasso.get().load(image_url).placeholder(R.drawable.no_image).into(img_brand_product);
 

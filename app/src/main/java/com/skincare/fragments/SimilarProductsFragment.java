@@ -90,6 +90,7 @@ public class SimilarProductsFragment extends Fragment implements RecyclerViewIte
             callApi();
     }
 
+    //main logic of this class is inside this function...
     private void callApi() {
 
         loader = Loader.show(requireContext());
@@ -108,6 +109,7 @@ public class SimilarProductsFragment extends Fragment implements RecyclerViewIte
                         currentUser.getUid()
                 );
 
+        //calling content based filtering...
         contentBasedFiltering.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
@@ -120,6 +122,7 @@ public class SimilarProductsFragment extends Fragment implements RecyclerViewIte
                             contentBased = true;
                         }
 
+                        //calling collaborative based filtering...
                         collaborativeBasedFiltering.enqueue(new Callback<ResponseBody>() {
                             @Override
                             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
@@ -139,6 +142,7 @@ public class SimilarProductsFragment extends Fragment implements RecyclerViewIte
                                                     if (task.isSuccessful()) {
                                                         DocumentSnapshot documentSnapshot = task.getResult();
                                                         if (documentSnapshot.exists()) {
+                                                            //getting collaborative products from db...
                                                             if (collaborativeBased) {
                                                                 List<Long> collaborativeList = (List<Long>) documentSnapshot.get("collaborative");
                                                                 if (collaborativeList != null && collaborativeList.size() > 0) {
@@ -158,7 +162,12 @@ public class SimilarProductsFragment extends Fragment implements RecyclerViewIte
                                                                                     String product_name = documentSnapshot1.getString("product_name");
                                                                                     String product_url = documentSnapshot1.getString("product_url");
                                                                                     long rating = documentSnapshot1.getLong("rating");
-                                                                                    String ingredients = documentSnapshot.getString("ingredients");
+                                                                                    String ingredients = "";
+                                                                                    try {
+                                                                                        ingredients = documentSnapshot.getString("ingredients");
+                                                                                    } catch (Exception ex) {
+                                                                                        ex.printStackTrace();
+                                                                                    }
 
                                                                                     BrandProductsModel item = new BrandProductsModel(
                                                                                             brand,
@@ -180,6 +189,7 @@ public class SimilarProductsFragment extends Fragment implements RecyclerViewIte
                                                                 }
                                                             }
 
+                                                            //getting content products from db...
                                                             if (contentBased) {
                                                                 List<Long> contentList = (List<Long>) documentSnapshot.get("content");
                                                                 if (contentList != null && contentList.size() > 0) {
@@ -199,7 +209,12 @@ public class SimilarProductsFragment extends Fragment implements RecyclerViewIte
                                                                                     String product_name = documentSnapshot1.getString("product_name");
                                                                                     String product_url = documentSnapshot1.getString("product_url");
                                                                                     long rating = documentSnapshot1.getLong("rating");
-                                                                                    String ingredients = documentSnapshot.getString("ingredients");
+                                                                                    String ingredients = "";
+                                                                                    try {
+                                                                                        ingredients = documentSnapshot.getString("ingredients");
+                                                                                    } catch (Exception ex) {
+                                                                                        ex.printStackTrace();
+                                                                                    }
 
                                                                                     BrandProductsModel item = new BrandProductsModel(
                                                                                             brand,
